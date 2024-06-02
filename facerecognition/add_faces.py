@@ -1,6 +1,7 @@
 import cv2
 import pickle
 import numpy as np
+import os
 
 
 # fungsi untuk open webcam add video Path: mlmodel/add_faces.py
@@ -41,7 +42,27 @@ cv2.destroyAllWindows()
 faces_data=np.array(faces_data)
 faces_data=faces.data.reshape(100, -1)
 
+#menambahkan data nama ke data folder kalau belum ada
+if 'names.pkl' in os.listdir('data/'):
+    names=[name]*100
+    with open('data/names.pkl', 'wb') as f:
+        pickle.dump(names, f)
+else:
+    names=[name]*100
+    with open('data/names.pkl', 'rb') as f:
+        names=pickle.load(f)
+    names=names+[name]*100
+    with open('data/names.pkl', 'wb') as f:
+        pickle.dump(names, f)
 
-
-
-
+#menambahkan data wajah ke data folder kalau belum ada
+if 'faces_data.pkl' in os.listdir('data/'):
+    with open('data/faces_data.pkl', 'wb') as f:
+        pickle.dump(faces_data, f)
+else:
+    names=[name]*100
+    with open('data/faces_data.pkl', 'rb') as f:
+        faces=pickle.load(f)
+    facees=np.append(faces, faces_data, axis=0)
+    with open('data/faces_data.pkl', 'wb') as f:
+        pickle.dump(faces_data, f)
